@@ -2,9 +2,9 @@ name:                sforce-migration
 version:             0.1.0.0
 github:              "githubuser/sforce-migration"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2018 Author name here"
+author:              "Woodson Delhia"
+maintainer:          "woodsondelhia88@gmail.com"
+copyright:           "2018 Author Woodson Delhia"
 
 extra-source-files:
 - README.md
@@ -21,9 +21,13 @@ description:         Please see the README on Github at <https://github.com/gith
 
 dependencies:
 - base >= 4.7 && < 5
+- optparse-applicative >= 0.14.2
+- yaml >= 0.8.2
+- hxt >= 9.3.1
 
 library:
   source-dirs: src
+
 
 executables:
   sforce-migration-exe:
