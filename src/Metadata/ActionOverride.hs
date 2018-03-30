@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
@@ -6,12 +7,13 @@ module Metadata.ActionOverride where
 import Data.Data
 import Data.Typeable
 import Data.Text (Text)
+import qualified Data.Text as T
 import Data.Aeson
 import GHC.Generics
-import Metadata.Commons (strToLower)
+import Control.Monad
 
-data ActionName = Accept |  Clone | Delete | Edit | List | New | Tab | View deriving (Generic, Data, Typeable) 
-data ActionType = Default | FlexiPage | LightningComponent | Scontrol | Standard | Visualforce deriving (Generic, Show)
+data ActionName = Accept |  Clone | Delete | Edit | List | New | Tab | View deriving (Generic, Read, Show, Data, Typeable) 
+data ActionType = Default | Flexipage | Lightningcomponent | Scontrol | Standard | Visualforce deriving (Generic, Read, Show, Data, Typeable) 
 data FormFactor = Large | Medium | Small deriving (Generic, Show)
 
 data ActionOverride = ActionOverride
@@ -23,15 +25,21 @@ data ActionOverride = ActionOverride
     , skipRecordTypeSelect :: Maybe Bool
     } deriving (Generic, Show)
 
-instance FromJSON ActionName
-instance FromJSON ActionType
+instance FromJSON ActionName where
+    parseJSON (String s) = fmap read (pure $ T.unpack . T.toTitle $ s)
+    parseJSON _ = mzero
+
+instance FromJSON ActionType where
+    parseJSON (String s) = fmap read (pure $ T.unpack . T.toTitle $ s)
+    parseJSON _ = mzero
+
 instance FromJSON FormFactor
 
 instance FromJSON ActionOverride where
     parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = actionOverrideField } 
 
 actionOverrideField "actionType" = "type"
-actionOverrideField f = f
+actionOverrideField f = f 
 
-instance Show ActionName where
-    show = strToLower . showConstr . toConstr
+
+
