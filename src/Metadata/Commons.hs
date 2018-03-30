@@ -13,13 +13,14 @@ import GHC.Generics
 newtype Label = Label Text deriving (Generic, Show)
 newtype FullName = FullName Text deriving (Generic, Show)
 
-data DeploymentStatus = Deployed | InDevelopment deriving (Generic, Show)
-data DeleteConstraint = SetNull | Restrict | Cascade  deriving (Generic, Show)
-data Visibility       = Public | Protected deriving (Generic, Show)
-data Gender           = Masculine | Feminine | Neuter | AnimateMasculine deriving (Generic, Show)
-data SharingModel     = Private | Read | ReadWrite | ReadWriteTransfer | FullAccess | ControlledByParent deriving (Generic, Show)
-data StartsWith       = Consonant | Vowel | Special deriving (Generic, Show)
-data TreatBlanksAs    = BlankAsBlank | BlankAsZero deriving (Generic, Show)
+data DeploymentStatus   = Deployed | InDevelopment deriving (Generic, Show)
+data DeleteConstraint   = SetNull | Restrict | Cascade  deriving (Generic, Show)
+data Visibility         = Public | Protected deriving (Generic, Show)
+data Gender             = Masculine | Feminine | Neuter | AnimateMasculine deriving (Generic, Show)
+data SharingModel       = Private | Read | ReadWrite | ReadWriteTransfer | FullAccess | ControlledByParent deriving (Generic, Show)
+data StartsWith         = Consonant | Vowel | Special deriving (Generic, Show)
+data TreatBlanksAs      = BlankAsBlank | BlankAsZero deriving (Generic, Show)
+data FieldManageability =  Locked | DeveloperControlled | SubscriberControlled deriving (Generic, Show)
 
 data FieldType 
     = AutoNumber | Lookup | MasterDetail | MetadataRelationship | Checkbox | Currency | Date | DateTime | Email | EncryptedText
@@ -50,6 +51,8 @@ instance FromJSON Gender
 instance FromJSON SharingModel
 instance FromJSON StartsWith
 instance FromJSON TreatBlanksAs
+instance FromJSON FieldManageability
+instance FromJSON FieldType
 instance FromJSON PickList
 
 instance FromJSON PickListValues where 
