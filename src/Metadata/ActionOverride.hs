@@ -2,6 +2,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
+{-| Following Developer Salesforce Criterias for ActionOverride https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/actionoverride.htm#actionoverride |-}
 module Metadata.ActionOverride where
 
 import Data.Data
