@@ -10,6 +10,7 @@ import Metadata.ValueSet (ValueSet)
 import Metadata.LookupFilter   (LookupFilter, FilterItem)
 import Metadata.Commons  (FullName, Label, FieldType, DeleteConstraint, FieldManageability, TreatBlanksAs, PickList)
 
+newtype CustomFieldPackage = CustomFieldPackage { field :: CustomField } deriving (Generic, Show)
 data SummaryOperation
     = Count | Min | Max | Sum
     deriving (Generic, Show)
@@ -68,7 +69,8 @@ data CustomField = CustomField
     , writeRequiresMasterRead              :: Maybe Bool
     } deriving (Generic, Show)
 
-    
+
+instance FromJSON CustomFieldPackage
 instance FromJSON SummaryOperation
 instance FromJSON CustomField where 
     parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = customFieldP }
