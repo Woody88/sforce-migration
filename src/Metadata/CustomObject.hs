@@ -7,8 +7,8 @@ import Data.Aeson
 import Data.Yaml as Yaml
 import Data.ByteString
 import GHC.Generics
-import Metadata.Commons
-data CustomFieldType = Text | Date | DateTime | CheckBox | PickList deriving (Generic, Show)
+import Metadata.CustomField (CustomFieldPackage)
+import Metadata.Commons (FullName, DeploymentStatus, Visibility, Label)
 
 newtype CustomObjectPackage = CustomObjectPackage { customObject :: CustomObject } deriving (Generic, Show)
 
@@ -17,6 +17,7 @@ data CustomObject = CustomObject
     , plural                     :: T.Text 
     , label                      :: Label
     , deploymentStatus           :: DeploymentStatus
+    , fields                     :: Maybe [CustomFieldPackage]
     , allowInChatterGroups       :: Maybe Bool
     , compactLayoutAssignment    :: Maybe T.Text
     , enableActivities           :: Maybe Bool
@@ -31,13 +32,6 @@ data CustomObject = CustomObject
     , recordTypeTrackHistory     :: Maybe T.Text
     , visibility                 :: Maybe Visibility
     } deriving (Generic, Show)
-
-data CustomFields = CustomFields
-    { fieldName  :: ByteString
-    , fieldType  :: CustomFieldType
-    , fieldLabel      :: Maybe ByteString
-    } deriving (Generic, Show)
-
 
 instance FromJSON CustomObjectPackage where
     parseJSON = genericParseJSON defaultOptions 
