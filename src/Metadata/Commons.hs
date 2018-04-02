@@ -23,3 +23,11 @@ strToLower = toLowerCase . show
 toLowerCase :: String -> String
 toLowerCase []     = []
 toLowerCase (x:xs) = toLower x : toLowerCase xs
+
+toUpperCase :: String -> String
+toUpperCase []     = []
+toUpperCase (x:xs) = toUpper x : toUpperCase xs 
+
+capitalize :: String -> String
+capitalize []     = []
+capitalize (x:xs) = toUpper x : xs 
