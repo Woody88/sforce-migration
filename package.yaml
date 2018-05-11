@@ -31,7 +31,10 @@ dependencies:
 
 library:
   source-dirs: src
-
+  exposed-modules: 
+  - Metadata
+  - Lib
+  - Command
 
 executables:
   sforce-migration-exe:

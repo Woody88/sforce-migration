@@ -10,7 +10,10 @@ import qualified Data.Text as T
 import Data.Aeson
 import GHC.Generics
 import Control.Monad
-import XML.Parser hiding (String)
+-- import XML.Parser hiding (String)
+import Text.XML.HaXml.XmlContent hiding (String)
+import Text.XML.HaXml.Util
+import Text.XML.HaXml.Types
 import Metadata.Commons (strToLower, capitalize)
 
 newtype ActionOverridePackage = ActionOverridePackage { actionOverrides :: ActionOverride } deriving (Generic, Show)
@@ -64,6 +67,8 @@ instance FromJSON ActionOverride where
 actionOverrideField "actionType" = "type"
 actionOverrideField f = f 
 
+mkAttrElemC :: String -> [Attribute] -> [Content ()] -> Content ()
+mkAttrElemC x as cs = CElem (Elem (N x) as cs) ()
 
 instance HTypeable Text where
     toHType = (toHType . T.unpack) 
