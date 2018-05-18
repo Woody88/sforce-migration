@@ -35,17 +35,16 @@ data CustomObject = CustomObject
 data CustomFields = CustomFields
     { fieldName  :: ByteString
     , fieldType  :: CustomFieldType
-    , fieldLabel      :: Maybe ByteString
+    , fieldLabel :: Maybe ByteString
     } deriving (Generic, Show)
-
-
+    
 instance FromJSON CustomObjectPackage where
     parseJSON = genericParseJSON defaultOptions 
 
 instance FromJSON CustomObject where 
-    parseJSON = genericParseJSON defaultOptions { fieldLabelModifier = customObjecField }
+    parseJSON = genericParseJSON defaultOptions -- { fieldLabelModifier = customObjecField }
 
 
-customObjecField "objectName" = "name"
-customObjecField "objectFullName" = "fullName"
-customObjecField f = f
+-- customObjecField "objectName" = "name"
+-- customObjecField "objectFullName" = "fullName"
+-- customObjecField f = f

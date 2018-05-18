@@ -2,7 +2,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DeriveDataTypeable #-}
 
-{-| Following Developer Salesforce Criterias for ActionOverride https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/actionoverride.htm#actionoverride |-}
+{- Following Developer Salesforce Criterias for ActionOverride https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/actionoverride.htm#actionoverride -}
 module Metadata.ActionOverride where
 
 import Data.Text (Text)
@@ -114,7 +114,7 @@ instance XmlContent ActionOverride where
             parseMaybeC = optional $ fmap (T.pack) $ inElement "content" text
             parseMaybeSkip = optional $ fmap (const True) $ inElementWith (\x y -> True) "skipRecordTypeSelect" text
     toContents v@(ActionOverride an at _ _ _ _ ) =
-        [mkAttrElemC (showConstr 0 $ toHType v) [] (toContents an ++ toContents at)]
+        [mkAttrElemC (showConstr 0 $ toHType v) [mkAttr "xmlns" "http://soap.sforce.com/2006/04/metadata"] (toContents an ++ toContents at)]
         where value (Defined _ _ [Constr _  _ v']) = v'
 
 

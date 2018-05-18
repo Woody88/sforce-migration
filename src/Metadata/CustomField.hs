@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 
 module Metadata.CustomField where
-{-| Common types referring the developer saleforce page https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/customfield.htm |-}
+{- Common types referring the developer saleforce page https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/customfield.htm -}
 
 import Data.Text         (Text)  
 import Data.Aeson

@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE DuplicateRecordFields #-}
 
-{-| Common types referring the developer saleforce page https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_field_types.htm#meta_type_deploy_stat_type |-}
+{- Common types referring the developer saleforce page https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_field_types.htm#meta_type_deploy_stat_type -}
 
 module Metadata.Commons where
 
@@ -12,7 +12,7 @@ import GHC.Generics
 
 newtype Label = Label Text deriving (Generic, Show)
 newtype FullName = FullName Text deriving (Generic, Show)
-
+    
 data DeploymentStatus   = Deployed | InDevelopment deriving (Generic, Show)
 data DeleteConstraint   = SetNull | Restrict | Cascade  deriving (Generic, Show)
 data Visibility         = Public | Protected deriving (Generic, Show)
@@ -41,6 +41,9 @@ data PickListValues = PickListValues
     , controllingFieldValues :: Maybe Bool
     , pickListValueDefault   :: Maybe Bool
     } deriving (Generic, Show)
+
+class MetaPackage a where
+    unwrap :: a -> b
 
 instance FromJSON FullName 
 instance FromJSON Label 
