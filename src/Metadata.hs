@@ -20,7 +20,8 @@ import Data.Aeson
 import Data.Aeson.Types (Parser)
 import Data.HashMap.Lazy as HM    
 import Data.Monoid ((<>))
-import Data.Bifunctor
+import Text.XML.HaXml.XmlContent hiding (Parser, Success)
+import Metadata.Commons (mkAttrElemC)
 import Metadata.ActionOverride
 import Metadata.CustomObject 
 
@@ -29,6 +30,17 @@ data Metadata
     | ActionOverrideMeta ActionOverride
     | BadMetadata Text
     deriving (Generic, Show)
+
+instance HTypeable Metadata where
+    toHType _ = toHType ("Metadata" :: String)
+
+instance XmlContent Metadata where
+    parseContents = error "parseContents not yet implemented."
+    toContents = \case
+        (ActionOverrideMeta x) ->
+            [mkAttrElemC (showConstr 0 $ toHType x) [mkAttr "xmlns" "http://soap.sforce.com/2006/04/metadata"] (toContents x)]
+        _ -> error "Bad type"
+        
 
 instance FromJSON Metadata where
       parseJSON = withObject "Metadata" metadataType

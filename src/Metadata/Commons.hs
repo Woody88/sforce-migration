@@ -9,6 +9,9 @@ import Data.Char
 import Data.Text (Text)
 import Data.Aeson
 import GHC.Generics
+import Text.XML.HaXml.XmlContent hiding (String)
+import Text.XML.HaXml.Util 
+import Text.XML.HaXml.Types
 
 newtype Label = Label Text deriving (Generic, Show)
 newtype FullName = FullName Text deriving (Generic, Show)
@@ -77,3 +80,13 @@ toUpperCase (x:xs) = toUpper x : toUpperCase xs
 capitalize :: String -> String
 capitalize []     = []
 capitalize (x:xs) = toUpper x : xs 
+
+mkAttrElemC :: String -> [Attribute] -> [Content ()] -> Content ()
+mkAttrElemC x as cs = CElem (Elem (N x) as cs) ()
+
+optionalContent :: HTypeable a => String -> Maybe a -> [Content ()]
+optionalContent _ Nothing = []
+optionalContent el (Just c) = toContents' el c
+    where toContents' e c = [mkAttrElemC e [] (toText . value $ toHType c)]
+          value (Defined v _ _) = v
+          value (Prim _ v)      = v

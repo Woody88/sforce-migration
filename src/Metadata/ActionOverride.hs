@@ -10,11 +10,10 @@ import qualified Data.Text as T
 import Data.Aeson
 import GHC.Generics
 import Control.Monad
--- import XML.Parser hiding (String)
 import Text.XML.HaXml.XmlContent hiding (String)
-import Text.XML.HaXml.Util
+import Text.XML.HaXml.Util 
 import Text.XML.HaXml.Types
-import Metadata.Commons (strToLower, capitalize)
+import Metadata.Commons (strToLower, capitalize, mkAttrElemC, optionalContent)
 
 newtype ActionOverridePackage = ActionOverridePackage { actionOverrides :: ActionOverride } deriving (Generic, Show)
 data ActionName = Accept |  Clone | Delete | Edit | List | New | Tab | View deriving (Generic, Read, Show) 
@@ -67,11 +66,8 @@ instance FromJSON ActionOverride where
 actionOverrideField "actionType" = "type"
 actionOverrideField f = f 
 
-mkAttrElemC :: String -> [Attribute] -> [Content ()] -> Content ()
-mkAttrElemC x as cs = CElem (Elem (N x) as cs) ()
-
 instance HTypeable Text where
-    toHType = (toHType . T.unpack) 
+    toHType x = Defined (T.unpack x) [] []
 
 instance HTypeable ActionName where
     toHType a = Defined (strToLower a) [] [Constr "actionName" []  []]
@@ -113,8 +109,7 @@ instance XmlContent ActionOverride where
             parseMaybeCm = optional $ fmap (T.pack) $ inElement "comment" text
             parseMaybeC = optional $ fmap (T.pack) $ inElement "content" text
             parseMaybeSkip = optional $ fmap (const True) $ inElementWith (\x y -> True) "skipRecordTypeSelect" text
-    toContents v@(ActionOverride an at _ _ _ _ ) =
-        [mkAttrElemC (showConstr 0 $ toHType v) [mkAttr "xmlns" "http://soap.sforce.com/2006/04/metadata"] (toContents an ++ toContents at)]
+    toContents v@(ActionOverride an at cm ct ff sr) = toContents an ++ toContents at ++ optionalContent "comment" cm ++ optionalContent "content" ct ++ toContents ff ++ optionalContent "skipRecordTypeSelect" sr
         where value (Defined _ _ [Constr _  _ v']) = v'
-
+              d v i = Defined v [] [Constr i []  []]
 
