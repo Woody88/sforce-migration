@@ -7,6 +7,7 @@ module Metadata
     , module Metadata.CustomObject
     , Metadata(..)
     , decodeMeta
+    , encodeMeta
     )
     where
 
@@ -66,6 +67,9 @@ decodeMeta :: BL.ByteString -> Maybe Metadata
 decodeMeta = decoder . decode
     where decoder (Just (BadMetadata _)) = Nothing
           decoder x = x
+
+encodeMeta :: Metadata -> BL.ByteString 
+encodeMeta = fpsShowXml False
 
 headMaybe :: [(Text, Value)] -> Maybe (Text, Value)
 headMaybe [] = Nothing
